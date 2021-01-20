@@ -6,13 +6,13 @@ class MainMenu {
     fun mainMenu(): EnumMenu {
         println("Главное меню")
         println("1 - Начать")
-        println("2 - Продолжить")
+        //println("2 - Продолжить")
         println("0 - Выйти")
         print(">>> ")
         val playerChoice = readLine() ?: ""
         when (playerChoice) {
             "1" -> return EnumMenu.START
-            "2" -> return EnumMenu.CONTINUE //Продолжить с последнего действия, не реализовано
+            //"2" -> return EnumMenu.CONTINUE //Продолжить с последнего действия, не реализовано
             "0" -> return EnumMenu.EXIT
             else -> println("Введено неверное значение")
         }

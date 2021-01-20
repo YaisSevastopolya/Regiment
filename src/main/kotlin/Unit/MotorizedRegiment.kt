@@ -6,7 +6,7 @@ import InfantryUnit.*
 import VehicleUnit.BMP_3
 import VehicleUnit.VehicleUnit
 
-class MotorizedRegiment  : Unit {
+class MotorizedRegiment  : MilitaryUnitFun() {
 
     override val structureCommand = listOf<CommandUnit>(
         MotorizedRegimentLeader(),
@@ -23,7 +23,7 @@ class MotorizedRegiment  : Unit {
     override val structureVehicle = listOf<VehicleUnit>(
         BMP_3(),
     )
-    override val structureUnit = listOf<Unit>(
+    override val structureMilitaryUnit = listOf<MilitaryUnit>(
         MotorizedBattalion(),
         MotorizedBattalion(),
         MotorizedBattalion(),

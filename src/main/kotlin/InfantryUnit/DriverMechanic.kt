@@ -5,7 +5,10 @@ import Data.Percent
 
 class DriverMechanic (
     override val position: String = "driverMechanic",
-    override var inOrder: Boolean = true,
+    override var isIll: Boolean = false,
+    override var isWounded: Boolean = false,
+    override var isKilled: Boolean = false,
+    override var isArrested: Boolean = false,
     override var isFed: Percent = Percent(100),
     override var isArmed: Boolean = true,
     override var isEquipped: Percent = Percent(100),
@@ -14,6 +17,8 @@ class DriverMechanic (
     override var combatExperience: Percent = Percent(0),
     override var vehicleDriverExperience: Percent = Percent(100),
     override var vehicleCombatDriverExperience: Percent = Percent(0),
-) : InfantryUnit {
+    override var isAlcoholic: Boolean = false,
+    override var isSportsman: Boolean = false,
+) : InfantryUnitFun() {
     override val basicCombatPower = (Data.database["driverMechanic"] ?: error("")).basicCombatPower
 }

@@ -1,13 +1,9 @@
 package Unit
 
-import CommandUnit.CommandUnit
-import InfantryUnit.InfantryUnit
 import Main.ProcessVisitor.UnitVisitor
-import VehicleUnit.VehicleUnit
 
-interface Unit {
-    val structureCommand: List<CommandUnit>
-    fun unitCommandEfficiency(): Double {
+abstract class MilitaryUnitFun  : MilitaryUnit {
+    override fun unitCommandEfficiency(): Double {
         var commandEfficiency = structureCommand[0].commandEfficiency()
         for (i in structureCommand) {
             commandEfficiency += i.commandEfficiency()
@@ -15,25 +11,21 @@ interface Unit {
         commandEfficiency /= (structureCommand.size + 1).toDouble()
         return commandEfficiency
     }
-    fun combatantValueCommandSum(): Double {
+    override fun combatantValueCommandSum(): Double {
         var combatantValue = 0.0
         for (i in structureCommand) {
             combatantValue += i.combatantValue()
         }
         return combatantValue
     }
-    val structureInfantry: List<InfantryUnit>
-    fun combatantValueInfantrySum(): Double {
+    override fun combatantValueInfantrySum(): Double {
         var combatantValue = 0.0
         for (i in structureInfantry) {
             combatantValue += i.combatantValue()
         }
         return combatantValue
     }
-    val structureVehicle: List<VehicleUnit>
-    val maxCrew: Int
-    val minCrew: Int
-    fun vehicleEfficiency(): Double {
+    override fun vehicleEfficiency(): Double {
         val vehicleNum = structureVehicle.size
         val driversSkill = mutableListOf<Double>()
         for (i in structureCommand) {
@@ -59,35 +51,34 @@ interface Unit {
         }
         return vehicleEfficiency
     }
-    fun vehicleSupportEfficiency(): Double {
+    override fun vehicleSupportEfficiency(): Double {
         val vehicleSupportEfficiency = 1 + (vehicleEfficiency() - 1) / 5
         return vehicleSupportEfficiency
     }
-    fun combatantValueVehicleSum(): Double {
+    override fun combatantValueVehicleSum(): Double {
         var combatantValue = 0.0
         for (i in structureVehicle) {
             combatantValue += i.combatantValue()
         }
         return combatantValue
     }
-    val structureUnit: List<Unit>
-    fun combatantValueUnitSum(): Double {
+    override fun combatantValueUnitSum(): Double {
         var combatantValue = 0.0
-        for (i in structureUnit) {
+        for (i in structureMilitaryUnit) {
             combatantValue += i.combatantValue()
         }
         return combatantValue
     }
-    fun combatantValue() : Double {
+    override fun combatantValue() : Double {
         val combatantValue = (
                 (combatantValueCommandSum() * vehicleSupportEfficiency())
-                + (combatantValueInfantrySum() * vehicleSupportEfficiency())
-                + (combatantValueVehicleSum() * vehicleEfficiency())
-                + combatantValueUnitSum()
+                        + (combatantValueInfantrySum() * vehicleSupportEfficiency())
+                        + (combatantValueVehicleSum() * vehicleEfficiency())
+                        + combatantValueUnitSum()
                 ) * unitCommandEfficiency()
         return combatantValue
     }
-    fun accept(visitor: UnitVisitor) {
+    override fun accept(visitor: UnitVisitor) {
         visitor.visit(this)
         structureCommand.forEach{
             it.accept(visitor)
@@ -98,7 +89,7 @@ interface Unit {
         structureVehicle.forEach{
             it.accept(visitor)
         }
-        structureUnit.forEach{
+        structureMilitaryUnit.forEach{
             it.accept(visitor)
         }
     }

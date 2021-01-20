@@ -6,7 +6,11 @@ import Main.ProcessVisitor.UnitVisitor
 
 interface InfantryUnit {
     val position: String
-    var inOrder: Boolean //inOrder может быть с подпунктами?
+    val inOrder: Boolean
+    var isIll: Boolean
+    var isWounded: Boolean
+    var isKilled: Boolean
+    var isArrested: Boolean
     var isFed: Percent
     var isArmed: Boolean
     var isEquipped: Percent
@@ -15,62 +19,19 @@ interface InfantryUnit {
     var combatExperience: Percent
     var vehicleDriverExperience: Percent
     var vehicleCombatDriverExperience: Percent
+    var isAlcoholic: Boolean
+    var isSportsman: Boolean
 
-    fun fullName() : String {
-        val name = Data.name.random()
-        val surname = Data.surname.random()
-        val patronymic = Data.patronymic.random()
-        return "$surname $name $patronymic"
-    }
+    var name: String
+    var surname: String
+    var patronymic: String
+
+    val fullName: String
 
     val basicCombatPower: Double
+    fun combatantValue(): Double
 
-    fun combatantValue() : Double {
-        var combatantValue = 0.0
+    fun vehicleDriverEfficiency(): Double
 
-        if (inOrder && isArmed) {
-            val fed = isFed.toDouble()
-            val equipped = isEquipped.toDouble()
-            var combatPower = basicCombatPower
-            if (fed < 1.0) {
-                combatPower *= 0.1
-            }
-            else if (fed < 10.0) {
-                combatPower *= 0.5
-            }
-            if (equipped < 1.0) {
-                combatPower *= 0.1
-            }
-            else if (equipped < 10.0) {
-                combatPower *= 0.5
-            }
-
-            val trained = isTrained.toDouble()
-            combatPower *= (trained / 100 * 3)     //равновесное состояние тренированности - 33%
-
-            if (isBattleTried) {
-                val combatExperience = combatExperience.toDouble()
-                combatPower *= ((combatExperience / 100) * 5 + 1.5)     //обстрелянный личный состав сразу на 50% боеспособнее
-            }
-
-            combatantValue = combatPower
-        }
-        return combatantValue
-    }
-
-    fun vehicleDriverEfficiency(): Double {
-        val vehicleDriverExperience = vehicleDriverExperience.toDouble()
-        val vehicleCombatDriverExperience = vehicleCombatDriverExperience.toDouble()
-        var vehicleDriverEfficiency = 0.0
-        if (vehicleDriverExperience > 50.0) {                   //Водительский опыт ниже 50% не позволит управлять машиной
-            vehicleDriverEfficiency = vehicleDriverExperience / 100
-        }
-        if (isBattleTried) {
-            vehicleDriverEfficiency *= ((vehicleCombatDriverExperience / 100) * 5 + 1.5)
-        }
-
-        return vehicleDriverEfficiency
-    }
-
-    fun accept(visitor: UnitVisitor) = visitor.visit(this)
+    fun accept(visitor: UnitVisitor)
 }

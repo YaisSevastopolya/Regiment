@@ -1,18 +1,18 @@
 package Main.ProcessVisitor
 
 import CommandUnit.CommandUnit
-import Decisions.PersonnelList
+import Decisions.Ammunition
 import InfantryUnit.InfantryUnit
 import Unit.MilitaryUnit
 import VehicleUnit.VehicleUnit
 
-class VisitorPersonnelList(var i: Int = 1) : UnitVisitor {
+class VisitorAmmunition : UnitVisitor {
     override fun visit(commandUnit: CommandUnit) {}
     override fun visit(infantryUnit: InfantryUnit) {
-        print("$i ")
-        PersonnelList.personnelListInfantry(infantryUnit)
-        i++
+        Ammunition.ammunition(infantryUnit)
     }
-    override fun visit(vehicleUnit: VehicleUnit) {}
+    override fun visit(vehicleUnit: VehicleUnit) {
+        Ammunition.ammunition(vehicleUnit)
+    }
     override fun visit(militaryUnit: MilitaryUnit) {}
 }
