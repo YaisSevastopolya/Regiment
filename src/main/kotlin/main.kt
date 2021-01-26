@@ -1,5 +1,11 @@
 import Data.EnumMenu
 import Main.*
+import java.io.BufferedReader
+import java.io.InputStreamReader
+import java.net.Socket
+import java.io.InputStream;
+
+
 
 fun main() {
     start()
@@ -36,6 +42,21 @@ fun start() {
             EnumMenu.DEFAULT -> mainMenu.mainMenu()
             EnumMenu.EXIT -> break
             EnumMenu.NEW_STEP -> continue
+        }
+    }
+}
+
+object SocketClient {
+    @JvmStatic
+    fun main(args: Array<String>) {
+        try {
+            val clientSocket = Socket("localhost", 50001)
+            val `is`: InputStream = clientSocket.getInputStream()
+            val br = BufferedReader(InputStreamReader(`is`))
+            val receivedData = br.readLine()
+            println("Received Data: $receivedData")
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 }

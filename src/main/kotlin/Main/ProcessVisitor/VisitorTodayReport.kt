@@ -9,57 +9,28 @@ class VisitorTodayReport(
     val countersInfantry: MutableMap<String, Int> = mutableMapOf(),
     val countersVehicle: MutableMap<String, Int> = mutableMapOf(),
 ) : UnitVisitor {
-    override fun visit(commandUnit: CommandUnit) {}
-    override fun visit(infantryUnit: InfantryUnit) {
-        countersInfantry["По штату"] = countersInfantry.getOrDefault("По штату", 0) + 1
-        if (infantryUnit.inOrder) {
-            countersInfantry["В строю"] = countersInfantry.getOrDefault("В строю", 0) + 1
+    fun numbers(propertyState: Boolean, propertyName: String, counters: MutableMap<String, Int>) {
+        if (propertyState) {
+            counters[propertyName] = counters.getOrDefault(propertyName, 0) + 1
         } else {
-            countersInfantry["В строю"] = countersInfantry.getOrDefault("В строю", 0)
-        }
-        if (infantryUnit.isIll) {
-            countersInfantry["Болеет"] = countersInfantry.getOrDefault("Болеет",0) + 1
-        } else {
-            countersInfantry["Болеет"] = countersInfantry.getOrDefault("Болеет",0)
-        }
-        if (infantryUnit.isWounded) {
-            countersInfantry["Ранено"] = countersInfantry.getOrDefault("Ранено",0) + 1
-        } else {
-            countersInfantry["Ранено"] = countersInfantry.getOrDefault("Ранено",0)
-        }
-        if (infantryUnit.isKilled) {
-            countersInfantry["Убито"] = countersInfantry.getOrDefault("Убито",0) + 1
-        } else {
-            countersInfantry["Убито"] = countersInfantry.getOrDefault("Убито",0)
-        }
-        if (infantryUnit.isArrested) {
-            countersInfantry["Под арестом"] = countersInfantry.getOrDefault("Под арестом",0) + 1
-        } else {
-            countersInfantry["Под арестом"] = countersInfantry.getOrDefault("Под арестом",0)
+            counters[propertyName] = counters.getOrDefault(propertyName, 0)
         }
     }
+    override fun visit(commandUnit: CommandUnit) {}
+    override fun visit(infantryUnit: InfantryUnit) {
+        numbers(true, "По штату", countersInfantry)
+        numbers(infantryUnit.inOrder, "В строю", countersInfantry)
+        numbers(infantryUnit.isIll, "Болеет", countersInfantry)
+        numbers(infantryUnit.isWounded, "Ранено", countersInfantry)
+        numbers(infantryUnit.isKilled, "Убито", countersInfantry)
+        numbers(infantryUnit.isArrested, "Под арестом", countersInfantry)
+    }
     override fun visit(vehicleUnit: VehicleUnit) {
-        countersVehicle["По штату"] = countersVehicle.getOrDefault("По штату", 0) + 1
-        if (vehicleUnit.inOrder) {
-            countersVehicle["В строю"] = countersVehicle.getOrDefault("В строю", 0) + 1
-        } else {
-            countersVehicle["В строю"] = countersVehicle.getOrDefault("В строю", 0)
-        }
-        if (vehicleUnit.malfunction) {
-            countersVehicle["Не на ходу"] = countersVehicle.getOrDefault("Не на ходу", 0) + 1
-        } else {
-            countersVehicle["Не на ходу"] = countersVehicle.getOrDefault("Не на ходу", 0)
-        }
-        if (vehicleUnit.damage) {
-            countersVehicle["Повреждено"] = countersVehicle.getOrDefault("Повреждено", 0) + 1
-        } else {
-            countersVehicle["Повреждено"] = countersVehicle.getOrDefault("Повреждено", 0)
-        }
-        if (vehicleUnit.destroyed) {
-            countersVehicle["Безвозвратно потеряно"] = countersVehicle.getOrDefault("Безвозвратно потеряно", 0) + 1
-        } else {
-            countersVehicle["Безвозвратно потеряно"] = countersVehicle.getOrDefault("Безвозвратно потеряно", 0)
-        }
+        numbers(true, "По штату", countersVehicle)
+        numbers(vehicleUnit.inOrder, "В строю", countersVehicle)
+        numbers(vehicleUnit.malfunction, "Не на ходу", countersVehicle)
+        numbers(vehicleUnit.damage, "Повреждено", countersVehicle)
+        numbers(vehicleUnit.destroyed, "Безвозвратно потеряно", countersVehicle)
     }
     override fun visit(militaryUnit: MilitaryUnit) {}
 }

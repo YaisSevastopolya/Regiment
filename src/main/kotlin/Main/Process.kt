@@ -79,7 +79,7 @@ class Process {
 
     fun selectLog(x: MilitaryUnit): EnumMenu {
         println("Выбор: ")
-        println("1 - Рапорт о текущем состоянии подразделения")  //не реализовано
+        println("1 - Рапорт о текущем состоянии подразделения")
         //println("2 - Рапорт за прошедшие сутки")  //не реализовано
         println("0 - Выйти")
         print(">>> ")
